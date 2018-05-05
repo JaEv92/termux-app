@@ -1,0 +1,47 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+
+    dependencies {
+        implementation 'com.android.support:support-annotations:27.1.0'
+        implementation "com.android.support:support-core-ui:27.1.0"
+        implementation project(":terminal-view")
+    }
+
+    defaultConfig {
+        applicationId "com.termux"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 72
+        versionName "0.60.12"
+
+        externalNativeBuild {
+            ndkBuild {
+                cFlags "-std=c11", "-Wall", "-Wextra", "-Werror", "-Os", "-fno-stack-protector", "-Wl,--gc-sections"
+            }
+        }
+
+        ndk {
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    externalNativeBuild {
+        ndkBuild {
+            path "src/main/jni/Android.mk"
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
+}
